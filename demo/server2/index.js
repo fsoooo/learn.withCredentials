@@ -20,6 +20,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Credentials", true);
     res.setHeader("Access-Control-Allow-Headers", "X-Custom-Header");
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001/");
+
     res.setHeader('Set-Cookie', 'isVisit=true');
     res.setHeader('Set-Cookie', 'isDo=false');
     res.setHeader('Set-Cookie', ['mycookie1=value1','mycookie2=value2']);
