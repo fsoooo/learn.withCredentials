@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 
     res.setHeader('Set-Cookie', 'isVisit=true');
     res.setHeader('Set-Cookie', 'isDo=false');
+
     res.setHeader('Set-Cookie', ['mycookie1=value1','mycookie2=value2']);
     next();
 });
