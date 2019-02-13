@@ -1,43 +1,150 @@
-# withCredentials
+### ajax
 
-#### 介绍
-    res.setHeader("Access-Control-Allow-Method", "GET, POST, HEAD");
-    res.setHeader("Access-Control-Allow-Credentials", true);
-    res.setHeader("Access-Control-Allow-Headers", "X-Custom-Header");
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001/");
-    res.setHeader('Set-Cookie', 'isVisit=true');
-    res.setHeader('Set-Cookie', 'isDo=false');
-    res.setHeader('Set-Cookie', ['mycookie1=value1','mycookie2=value2']);
+独立的ajax库,可单独使用,支持cors/jsonp等跨域请求,支持全局http拦截器、取消请求
 
-#### 软件架构
-软件架构说明
+#### demo
+
+```bash
+git clone https://github.com/rwson/ajax
+
+cd ajax/demo/example
+
+npm install
+
+node index.js
+
+//  开一个新的Terminal Tab,切换到server2 目录下,启动服务,模拟跨域请求
+
+cd ../server2
+
+npm install
+
+node index
+
+//	访问http://localhost:3000
+```
+​    
+
+#### Usage
+
+```javascript
+//  common script tag
+<script src="path/to/ajax.js"></script>
+<script>
+    
+    //  ...
+    
+    ajax({
+        //  ...
+    });
+    
+    //  ...
+    
+</script>
+
+//  require.js
+require(["ajax", ....], function(ajax, ...) {
+    
+    //  ...
+    
+    ajax({
+        //  ...
+    });
+    
+    //  ...
+    
+});
+```
+
+在ajax/example/example.js文件中可以看到完整的调用例子
+
+#### API
 
 
-#### 安装教程
+| 属性名             | 含义                                | 类型       | 默认      | 是否必须 |
+| --------------- | --------------------------------- | -------- | ------- | ---- |
+| url             | 请求地址                              | String   | 当前页面的地址 | 是    |
+| method          | 数据发送方式                            | String   | "GET"   | 否    |
+| data            | 要传递给后端的数据                         | Object   | {}      | 否    |
+| headers         | 请求头设置                             | Object   | {}      | 是    |
+| dataType        | 后端返回的数据类型                         | String   | "json"  | 否    |
+| withCredentials | 是否允许跨域请求(如果设置了cookie,可以带cookie证书) | Boolean  | false   | 否    |
+| timeout         | 超时时间(ms,为-1的时候表示不设置超时时间)          | Number   | -1      | 否    |
+| async           | 是否异步                              | Boolean  | true    | 否    |
+| context         | 回调函数中的this指向                      | Object   | window  | 否    |
+| success         | 服务端响应成功后的回调                       | Function | N/A     | 否    |
+| error           | 服务端响应失败后的回调                       | Function | N/A     | 否    |
+| abort           | 服务端响应超时后的回调,设置了有效的timeout才有效      | Function | N/A     | 否    |
 
-1. xxxx
-2. xxxx
-3. xxxx
+- dataType的可选值有"json"、 "text"、"script"、"xml"、"jsonp"五个可选值
 
-#### 使用说明
+###### 回调函数参数
 
-1. xxxx
-2. xxxx
-3. xxxx
+```javascript
+//  success
+//  当dataType为"jsonp"时,xhr无效
+//  其他情况,xhr为XMLHttpRequest实例
+success: function(res, xhr) {
+}
 
-#### 参与贡献
+//  error
+//  此回调在dataType非"jsonp"情况下有效
+error: function(res, ex, xhr) {
+}
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+//  abort
+//  当dataType为"jsonp"时,xhr无效
+//  其他情况,xhr为XMLHttpRequest实例
+abort: function(xhr) {}
+```
+
+###### 全局拦截器配置
+
+```javascript
+//	请求拦截器
+ajax.requestIntercept([
+  	function(xhr) {
+      	document.querySelector("#loading").style.display = "block";
+  	},
+  	function(xhr) {
+  	}
+]);
+或者
+ajax.requestIntercept(function(xhr) {});
+
+//	响应拦截器
+ajax.responseIntercept([
+  	function(xhr) {
+      	document.querySelector("#loading").style.display = "none";
+  	},
+  	function(xhr) {
+  	}
+]);
+或者
+ajax.responseIntercept(function(xhr) {});
+
+//	xhr为XMLHttpRequest实例
+//  当dataType为"jsonp"时,全局拦截器无效
+```
+
+###### 中途取消请求
+
+```javascript
+var instance = ajax({
+  //  ...
+});
+//	取消请求(在此处取消请求不会触发配置项中的abort回调)
+instance.abord();
+```
+
+```angular2
+res.setHeader("Access-Control-Allow-Method", "GET, POST, HEAD");
+res.setHeader("Access-Control-Allow-Credentials", true);
+res.setHeader("Access-Control-Allow-Headers", "X-Custom-Header");
+res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001/");
+res.setHeader('Set-Cookie', 'isVisit=true');
+res.setHeader('Set-Cookie', 'isDo=false');
+res.setHeader('Set-Cookie', ['mycookie1=value1','mycookie2=value2']);
+```
 
 
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
