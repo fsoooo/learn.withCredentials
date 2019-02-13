@@ -331,32 +331,32 @@ window.onload = function() {
         }
     });
 
-    // ajax({
-    //     url: differentDomain.script,
-    //     withCredentials: true,
-    //     method: "GET",
-    //     dataType: "script",
-    //     data: {
-    //         send: "data",
-    //         array: [{
-    //             key1: "value1",
-    //             key2: "value2",
-    //             key3: "value3"
-    //         }, {
-    //             key1: "value1",
-    //             key2: "value2",
-    //             key3: "value3"
-    //         }]
-    //     },
-    //     success: function(res, xhr) {
-    //         console.group("different domain script data type - GET");
-    //         console.log(res);
-    //         console.groupEnd();
-    //     },
-    //     error: function(res, ex, xhr) {
-    //
-    //     }
-    // });
+    ajax({
+        url: differentDomain.script,
+        withCredentials: true,
+        method: "GET",
+        dataType: "script",
+        data: {
+            send: "data",
+            array: [{
+                key1: "value1",
+                key2: "value2",
+                key3: "value3"
+            }, {
+                key1: "value1",
+                key2: "value2",
+                key3: "value3"
+            }]
+        },
+        success: function(res, xhr) {
+            console.group("different domain script data type - GET");
+            console.log(res);
+            console.groupEnd();
+        },
+        error: function(res, ex, xhr) {
+
+        }
+    });
     //
     // //  dataType text
     // ajax({
